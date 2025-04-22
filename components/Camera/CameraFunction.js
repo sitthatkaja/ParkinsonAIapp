@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   message: {
     textAlign: "center",
     paddingBottom: 10,
-    fontSize: 20,
+    fontSize: 70, // เพิ่มขนาดฟอนต์ตรงนี้
     color: "white",
     position: "absolute",
     top: 50,

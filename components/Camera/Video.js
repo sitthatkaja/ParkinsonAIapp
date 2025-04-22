@@ -1,6 +1,6 @@
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Button, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as MediaLibrary from "expo-media-library";
@@ -18,11 +18,19 @@ export default function VideoScreen({ route }) {
     isPlaying: player.playing,
   });
 
+  // ฟังก์ชันบันทึกวิดีโอ
   let saveVideo = () => {
     MediaLibrary.saveToLibraryAsync(uri).then(() => {
-        navigation.navigate("Camera")
-    })
-  }
+      Alert.alert("สำเร็จ", "บันทึกวิดีโอเรียบร้อยแล้ว");
+      navigation.popToTop(); // กลับไปหน้าแรกของ Stack
+    });
+  };
+
+  // ฟังก์ชันไม่บันทึกวิดีโอ
+  let discardVideo = () => {
+    Alert.alert("ยกเลิก", "ไม่ได้บันทึกวิดีโอ");
+    navigation.popToTop(); // กลับไปหน้าแรกของ Stack
+  };
 
   return (
     <View style={styles.contentContainer}>
@@ -45,12 +53,12 @@ export default function VideoScreen({ route }) {
         />
       </View>
       <View style={styles.btnContainer}>
-          <TouchableOpacity onPress={saveVideo} style={styles.btn}>
-            <Ionicons name="save-outline" size={30} color="black"/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("Camera")} style={styles.btn}>
-            <Ionicons name="trash-outline" size={30} color="black"/>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={saveVideo} style={styles.btn}>
+          <Ionicons name="save-outline" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={discardVideo} style={styles.btn}>
+          <Ionicons name="trash-outline" size={30} color="black" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -81,5 +89,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     margin: 10,
     elevation: 5,
-  }
+  },
 });
